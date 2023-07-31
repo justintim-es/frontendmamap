@@ -1,0 +1,168 @@
+<div class="columns is-mobile" >
+  <div class="column is-half-mobile has-text-left is-6"  *ngIf="!txt.amISender">
+    <div *ngIf="txt.content" style="word-break: break-all;">
+      <p class="heading has-text-danger" style="font-size: 0.50rem;">
+        {{ txt.date.toLocaleString() }}
+      </p>
+      <p class="subtitle is-size-7 has-text-danger">
+        {{ txt.content }}
+      </p>
+    </div>
+    <!-- <div class="tile is-ancestor" *ngIf="(txt.careRequest) && (isButton | async)"> -->
+      <div class="tile is-ancestor" *ngIf="((txt.careRequest) && txt.shouldRenderTile) || txt.alwaysRenderTile">
+      <div class="tile is-vertical is-12">
+        <div class="tile is-parent">
+          <article class="tile is-child notification is-danger p-2" >
+            <p class="heading" style="font-size: 0.5rem;">
+              {{ txt.date.toLocaleString() }}
+            </p>
+            <p class="title has-text-primary is-size-7">
+              {{ txt.careRequest!.task }}
+            </p>
+            <p class="subtitle has-text-primary is-size-7">
+              {{ txt.careRequest!.description}}
+            </p>
+            <p class="heading" style="font-size: 0.5rem;" *ngIf="txt.careRequest!.interval == 'OneTime'">éénmalig</p>
+            <p class="heading" style="font-size: 0.5rem;" *ngIf="txt.careRequest!.interval == 'Weekly'">wekelijks</p>
+            <p class="heading" style="font-size: 0.5rem;">
+              {{ 'nodig op: ' + ( txt.careRequest!.appointment?.date ? txt.careRequest!.appointment!.date!.toLocaleDateString() : 'overlegbaar') + ' om ' + (txt.careRequest!.appointment?.time ? txt.careRequest!.appointment!.time : 'overlegbaar') }}
+            </p>
+            <p class="heading" style="font-size: 0.5rem;">
+              {{ 'vergoeding: € ' + (txt.careRequest!.appointment?.compensation ? (txt.careRequest!.appointment)!.compensation : 'overlegbaar') }}
+            </p>
+           </article>
+        </div>
+        <div class="tile is-parent">
+          <div class="tile notification is-child is-danger pt-1 p-2 has-text-centered">
+            <button mat-button
+            class="has-text-primary"
+            *ngIf="txt.chatMessageButtonEnum == 'ToOffer' && !txt.careRequest!.appointment!.isOccupied"
+            routerLink="{{
+              (url | async)!.includes('/main-caregiver/') ?
+              ('/main-caregiver/messages-conversation-offer/' + txt.careRequestId + '/' + txt.careRequest!.appointment!.id + '/' + to) :
+              ('/main-careconsumer/messages-conversation-offer/false/' + txt.careRequestId + '/' + txt.careRequest!.appointment!.id + '/' + to)}}">
+            {{ (url | async)!.includes('/main-caregiver/') ? 'aanbod doen' : 'inplannen'}}
+          </button>
+            <!-- <button mat-button
+            class="has-text-primary"
+            *ngIf="(!(appointment | async)!.date || !(appointment | async)!.compensation) && !(appointment | async)!.isOccupied && txt.chatMessageButtonEnum == 'ToOffer'"
+            routerLink="{{
+              (url | async)!.includes('/main-caregiver/') ?
+              ('/main-caregiver/messages-conversation-offer/' + txt.careRequestId + '/' + (appointment | async)!.id + '/' + to) :
+              ('/main-careconsumer/messages-conversation-offer/' + txt.careRequestId + '/' + (appointment | async)!.id + '/' + to)}}">
+            {{ (url | async)!.includes('/main-caregiver/') ? 'aanbod doen' : 'inplannen'}}
+          </button> -->
+          <!-- maby instead of the list of if only just one no we need to know if all values are their if we would like to render accept -->
+          <button mat-button class="has-text-primary"
+          *ngIf="
+          txt.chatMessageButtonEnum == 'ToAccept' && !txt.careRequest!.appointment!.isAccept" (click)="accept(txt.id!, txt.careRequest!.appointment?.id!)">aannemen</button>
+          <button mat-button
+          class="has-text-primary"
+          routerLink="{{ '/main-careconsumer/messages-conversation-review/' + txt.id + '/' + txt.careRequest?.appointment?.id + '/' + to  }}"
+          *ngIf="txt.chatMessageButtonEnum == 'ToReview'">beoordelen</button>
+            <!-- <button mat-button class="has-text-primary"
+            *ngIf="
+            txt.chatMessageButtonEnum == 'ToAccept' &&
+            !(appointment | async)!.isOccupied &&
+             (appointment | async)!.date &&
+             (appointment | async)!.compensation &&
+            !(appointment | async)!.isAccept &&
+            !(appointment | async)!.isAccepted" (click)="accept(txt.id!)">aannemen</button> -->
+            <a href="{{ txt.careRequest!.appointment?.paymentRequest?.url }}" mat-button class="has-text-primary" *ngIf="txt.chatMessageButtonEnum == 'ToPay'">
+              betaal
+            </a>
+            <!-- <a href="{{ (appointment | async)!.paymentRequest?.url }}" mat-button class="has-text-primary" *ngIf="(appointment | async)!.paymentRequest && !(appointment | async)!.isOccupied">
+              betaal
+            </a> -->
+            <div class="spinner spinner-border spinner-border-sm has-text-primary mt-2" *ngIf="txt.careRequest!.appointment?.isAccept"></div>
+            <!-- <p class="heading" *ngIf="(appointment | async)!.isOccupied && !(appointment | async)!.paymentRequest">opdracht niet meer beschikbaar</p> -->
+            <p class="heading" *ngIf="txt.careRequest!.appointment?.isOccupied">opdracht niet meer beschikbaar</p>
+            <div *ngIf="txt.chatMessageButtonEnum == 'Reviewed'">
+              <button mat-icon-button color="accent" *ngFor="let star of stars; let i = index" >
+                <mat-icon>
+                  {{ showStars(i)}}
+                </mat-icon>
+              </button>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="column is-half-mobile" *ngIf="txt.amISender"></div>
+  <div class="column has-text-right" style="word-break: break-all;" *ngIf="txt.amISender">
+    <div *ngIf="txt.content">
+      <p class="heading has-text-danger" style="font-size: 0.50rem;" >
+        {{ txt.date.toLocaleString() }}
+      </p>
+      <p class="subtitle has-text-danger is-size-7">
+        {{ txt.content ? txt.content : txt.careRequest?.task }}
+      </p>
+    </div>
+    <div class="tile is-ancestor" *ngIf="((txt.careRequest) && txt.shouldRenderTile) || txt.alwaysRenderTile">
+      <div class="tile is-vertical is-12">
+        <div class="tile is-parent">
+          <article class="tile is-child notification is-danger p-2 has-text-left" >
+            <p class="heading" style="font-size: 0.5rem;">
+              {{ txt.date.toLocaleString() }}
+            </p>
+            <p class="title has-text-primary is-size-7">
+              {{ txt.careRequest!.task }}
+            </p>
+            <p class="subtitle has-text-primary is-size-7">
+              {{ txt.careRequest!.description}}
+            </p>
+            <p class="heading" style="font-size: 0.5rem;" *ngIf="txt.careRequest!.interval == 'OneTime'">éénmalig</p>
+            <p class="heading" style="font-size: 0.5rem;" *ngIf="txt.careRequest!.interval == 'Weekly'">wekelijks</p>
+            <p class="heading" style="font-size: 0.5rem;">
+              {{ 'nodig op: ' +
+
+              (txt.careRequest!.appointment?.date ? txt.careRequest!.appointment!.date!.toLocaleDateString() : 'overlegbaar') +
+              ' om ' +
+              (txt.careRequest!.appointment?.time ? txt.careRequest!.appointment!.time : 'overlegbaar')
+            }}
+            </p>
+            <p class="heading" style="font-size: 0.5rem;">
+              {{ 'vergoeding: € ' + (txt.careRequest!.appointment?.compensation ? txt.careRequest!.appointment!.compensation : 'overlegbaar') }}
+            </p>
+           </article>
+        </div>
+        <div class="tile is-parent"
+        *ngIf="!txt.careRequest!.appointment?.date || !txt.careRequest!.appointment?.time || !txt.careRequest!.appointment?.compensation || txt.chatMessageButtonEnum == 'Reviewed'">
+          <div class="tile notification is-child is-danger  pt-1 p-2 has-text-centered">
+            <button mat-button class="has-text-primary" *ngIf="txt.chatMessageButtonEnum == 'ToOffer' && !txt.careRequest!.appointment!.isOccupied"
+            routerLink="{{
+              (url | async)!.includes('/main-caregiver/') ?
+              ('/main-caregiver/messages-conversation-offer/' + cid + '/' + (txt.careRequest!.appointment)!.id + '/' + to) :
+              ('/main-careconsumer/messages-conversation-offer/false/' + cid + '/' + txt.careRequest!.appointment!.id   + '/' + to)
+            }}" >
+              {{ (url | async)!.includes('/main-caregiver/') ? 'aanbod aanpassen' : 'aanvraag bijwerken'}}
+            </button>
+            <!-- <button mat-button class="has-text-primary" *ngIf="!(appointment | async)!.isOccupied && txt.chatMessageButtonEnum == 'ToOffer'"
+            routerLink="{{
+              (url | async)!.includes('/main-caregiver/') ?
+              ('/main-caregiver/messages-conversation-offer/' + cid + '/' + (appointment | async)!.id + '/' + to) :
+              ('/main-careconsumer/messages-conversation-offer/false/' + cid + '/' + (appointment | async)!.id   + '/' + to)
+            }}" >
+              {{ (url | async)!.includes('/main-caregiver/') ? 'aanbod aanpassen' : 'aanvraag bijwerken'}}
+            </button> -->
+            <!-- <button mat-button class="has-text-primary" *ngIf="(appointment | async)!.isOccupied">niet meer beschikbaar</button> -->
+            <button mat-button class="has-text-primary" *ngIf="txt.careRequest!.appointment?.isOccupied">niet meer beschikbaar</button>
+            <div *ngIf="txt.chatMessageButtonEnum == 'Reviewed'">
+              <button mat-icon-button color="accent" *ngFor="let star of stars; let i = index" >
+                <mat-icon>
+                  {{ showStars(i)}}
+                </mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

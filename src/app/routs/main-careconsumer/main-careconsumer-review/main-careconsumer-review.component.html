@@ -1,0 +1,40 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="has-text-primary" routerLink="{{ '../../../../messages-conversation/' + caregiver }}">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="(isFetchFname | async) && !(isFetchFnameSuccess | async)">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="spinner spinner-border has-text-danger"></div>
+    </div>
+  </div>
+</section>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="isFetchFnameSuccess | async">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <p class="title has-text-danger">
+        {{ 'Hoe vond u ' + (fName | async) + '?'}}
+      </p>
+      <button mat-icon-button color="primary" *ngFor="let star of stars; let i = index" (click)="starKind(i+1)">
+        <mat-icon>
+          {{ showStar(i)}}
+        </mat-icon>
+      </button>
+      <form (submit)="fetchNew()" [formGroup]="formg">
+        <mat-form-field style="width: 100%;" class="pt-6">
+          <mat-label>Commentaar</mat-label>
+          <textarea [formControl]="commentFormControl" [(ngModel)]="comment" matInput></textarea>
+          <mat-error *ngIf="commentFormControl.hasError('fourhundred')">
+            {{ fetchNewCommentError | async }}
+          </mat-error>
+          <mat-error *ngIf="commentFormControl.hasError('fourhundredfive')">
+            {{ fetchNewError405 | async }}
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" type="submit" *ngIf="!(isFetchNew | async)">beoordelen</button>
+        <div class="spinner spinner-border spinner-border-sm has-text-danger" *ngIf="isFetchNew | async"></div>
+      </form>
+    </div>
+  </div>
+</section>

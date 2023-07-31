@@ -1,0 +1,40 @@
+<section class="hero is-fullheight is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered" *ngIf="isFetch | async">
+      <nav class="level is-mobile">
+        <div class="level-item">
+          <div>
+            <p class="title has-text-danger">Activeren...</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div>
+            <div class="spinner spinner-border has-text-danger"></div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container has-text-centered" *ngIf="isFetchSuccess | async">
+      <p class="title has-text-danger">Account is klaar voor gebruik!</p>
+      <p class="subtitle has-text-danger">u wordt zo doorgeleid naar de inlogpagina</p>
+    </div>
+  </div>
+  <div class="container has-text-centered" *ngIf="isFetchError400 | async">
+      <p class="title has-text-danger">
+        {{ (fetchError400 | async)!.title }}
+      </p>
+      <p class="subtitle has-text-danger">
+        {{ (fetchError400 | async)!.subtitle }}
+      </p>
+      <a href="{{ (fetchError400 | async)!.url }}" mat-raised-button color="primary" style="width: 100%;" *ngIf="(fetchError400 | async)!.code == 1" class="has-text-primary">koppelen</a>
+  </div>
+  <div class="container has-text-centered" *ngIf="isFetchError422 | async">
+    <p class="subtitle has-text-danger">
+      {{ (fetchError422 | async | json) }}
+    </p>
+    <button mat-raised-button color="primary" class="has-text-primary" *ngIf="!(isFetchResend | async) && !(isFetchResendSuccess | async)" (click)="sendtoken()">send new token</button>
+    <div class="spinner spinner-border spinner-border-sm has-text-danger" *ngIf="isFetchResend | async"></div>
+    <br>
+    <p class="heading has-text-danger" *ngIf="isFetchResendSuccess | async">a new token has beeen sent to your e-mail</p>
+</div>
+</section>

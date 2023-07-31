@@ -1,0 +1,40 @@
+<article class="media">
+  <figure class="media-left" >
+    <img src="{{ (imgUrl | async) + '/profile-image/img/' + raschan()  + '/' + appointment.careGiverId }}" *ngIf="appointment.hasImg" class="custom-avatar-small m-6" />
+    <mat-icon class="has-text-danger p-6" style="transform: scale(3);" *ngIf="!appointment.hasImg">account_circle</mat-icon>
+  </figure>
+  <div class="media-content p-6">
+    <div class="content">
+      <p>
+        <strong>
+          {{ appointment.careGiver.firstName + ' ' + appointment.careGiver.lastName }}
+        </strong> <small>
+          {{ ' @ ' + appointment.date.toLocaleDateString() + ' om ' +  appointment.date.toLocaleTimeString() }}
+        </small>
+        <br>
+        <strong class="is-size-6">
+          {{ appointment.careRequest.task }}
+        </strong>
+        <br>
+        <small>
+          {{ appointment.careRequest.description }}
+        </small>
+       <br>
+      </p>
+      <div class="container has-text-left">
+        <nav class="level">
+          <div class="level-item">
+            <div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+   </div>
+</article>
+<!-- <button mat-raised-button color="primary" class="has-text-primary"
+routerLink="{{ '/main-careconsumer/messages-conversation-accept/true/' + (appointment.careRequest.id) + '/' + appointment.id + '/' + appointment.careGiverId }}" style="width: 100%;">afspraak herhalen</button> -->
+<button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" (click)="repeat()" *ngIf="isPlanned ? !(isFetchPlannedRepeats | async)!.get(index) : !(isFetchPassedRepeats | async)!.get(index)">afspraak herhalen</button>
+<div class="has-text-centered">
+  <div class="spinner spinner-border spinner-border-sm has-text-danger has-text-centered" *ngIf="isPlanned ? (isFetchPlannedRepeats | async)!.get(index) : (isFetchPassedRepeats | async)!.get(index)"></div>
+</div>

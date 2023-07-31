@@ -1,0 +1,57 @@
+<section class="hero is-small is-primary is-bold">
+  <div class="hero-head">
+    <div class="container is-fluid has-text-left p-6">
+      <article class="media">
+        <figure class="media-left">
+                <img src="{{ 'http://localhost:5192/profile-image/img/nothing/' + (caregiver.id) }}" *ngIf="caregiver.hasImage" class="custom-avatar-small" />
+                <br>
+                  <mat-icon class="has-text-danger ml-5 mr-5" style="transform: scale(3.5);" *ngIf="!caregiver.hasImage" >account_circle</mat-icon>
+        </figure>
+        <div class="media-content container">
+          <div class="content"></div>
+          <p class="has-text-danger has-text-left">
+            <strong>
+              {{ caregiver.firstName + ' ' + caregiver.lastName }}
+            </strong>
+            <small>
+              {{' (' + caregiver.age  + ')' }}
+            </small>
+            <br>
+            <app-main-careconsumer-request-choose-stars *ngIf="caregiver.averageStars > 0" [stars]="caregiver.averageStars"></app-main-careconsumer-request-choose-stars>
+            <br>
+            {{ caregiver.biography }}
+          </p>
+          <p class="has-text-danger has-text-right" *ngIf="caregiver.course">
+            <strong>opleiding(en)</strong>
+            <br>
+            {{ caregiver.course.name }}
+            <mat-icon *ngIf="caregiver.course.passed">done</mat-icon>
+            <mat-icon *ngIf="!caregiver.course.passed">school</mat-icon>
+          </p>
+        </div>
+        <div class="media-right">
+          <mat-checkbox color="primary" (click)="caregiverAddOrRemoveInvited(caregiver.id)"></mat-checkbox>
+        </div>
+      </article>
+    </div>
+    <mat-expansion-panel style="width: 100%;">
+      <mat-expansion-panel-header class="has-text-danger">Werk geschiedenis</mat-expansion-panel-header>
+      <article class="media" *ngFor="let app of caregiver.appointments">
+        <div class="media-content">
+          <div class="content">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header class="has-text-danger">
+                {{ app.careRequest.task }}
+              </mat-expansion-panel-header>
+              <p class="has-text-danger">
+                {{ app.careRequest.description }}
+              </p>
+              <br>
+            <app-main-careconsumer-request-choose-stars *ngIf="app.review" [stars]="app.review!.stars!"></app-main-careconsumer-request-choose-stars>
+            </mat-expansion-panel>
+          </div>
+        </div>
+      </article>
+    </mat-expansion-panel>
+  </div>
+</section>

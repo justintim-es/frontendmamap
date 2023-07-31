@@ -1,0 +1,65 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="has-text-primary" routerLink="../profile">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <p class="title has-text-danger">Verzorging aanvragen</p>
+      <p class="subtitle has-text-danger">De datum en vergoeding kunt u ook later met de verzorger vaststellen.</p>
+      <form [formGroup]="form" (submit)="fetch()" >
+      <mat-form-field style="width: 100%;">
+        <mat-label>Taak</mat-label>
+        <input matInput [(ngModel)]="task" [formControl]="taskFormControl" />
+        <mat-error *ngIf="taskFormControl.hasError('backend')">
+          {{ taskError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Omschrijving</mat-label>
+        <textarea matInput [(ngModel)]="description" rows="5" [formControl]="descriptionFormControl"></textarea>
+        <mat-error *ngIf="descriptionFormControl.hasError('backend')">
+          {{ descriptionError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Interval</mat-label>
+        <mat-select [(value)]="interval" [formControl]="intervalFormControl">
+          <mat-option value="OneTime">
+            eenmalig
+          </mat-option>
+          <mat-option value="Weekly">
+            wekelijks
+          </mat-option>
+          <mat-option value="Monthly">
+            maandelijks
+          </mat-option>
+          <mat-option value="Annual">
+            jaarlijks
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="intervalFormControl.hasError('backend')">
+          {{ intervalError | async }}
+        </mat-error>
+      </mat-form-field>
+      <!-- <mat-form-field style="width: 100%;">
+        <mat-label>Wanneer (optioneel)</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="date" [formControl]="dateFormControl">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Hoelaat (optioneel)</mat-label>
+        <input type="time" matInput [formControl]="timeFormControl" [(ngModel)]="time">
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <span matPrefix>&nbsp; € &nbsp;</span>
+        <input matInput [(ngModel)]="compensation" placeholder="Vergoeding (optioneel)" type="number" [formControl]="compensationFormControl" />
+      </mat-form-field> -->
+      <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" type="submit" *ngIf="!(isFetch | async)">Verzorgers uitkiezen</button>
+      <div class="spinner spinner-border spinner-border-sm has-text-danger" *ngIf="isFetch | async"></div>
+    </form>
+    </div>
+  </div>
+</section>

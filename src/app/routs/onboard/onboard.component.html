@@ -1,0 +1,28 @@
+<section class="hero is-fullheight is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered" *ngIf="!(isFetchSuccess | async)">
+      <nav class="level">
+        <div class="level-item">
+          <div>
+            <p class="title has-text-danger">Koppelingslink ophalen...</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div>
+            <div class="spinner spinner-border has-text-danger"></div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container has-text-centered" *ngIf="isFetchSuccess | async">
+      <p class="title has-text-danger">Bijna klaar!</p>
+      <p class="subtitle" class="has-text-danger">Voordat wij uw E-Mail kunnen bevestigen dient u zich te koppelen aan onze betalingsprovider Stripe.</p>
+      <a mat-raised-button color="primary" class="has-text-primary" href="{{ url | async }}">koppelen</a>
+    </div>
+    <div class="container has-text-centered" *ngIf="isFetchError | async">
+      <p class="heading has-text-danger">
+        {{ fetchError | async | json }}
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+<mat-toolbar color="primary"><button mat-icon-button routerLink="../../request" class="has-text-primary">
+  <mat-icon>arrow_back</mat-icon>
+</button>
+<p class="title has-text-primary pt-4 is-size-7">nodig één of meer verzorgers uit</p>
+<span class="toolbar-spacer"></span>
+<p class="heading has-text-primary pt-2">uitnodigen</p>
+<button mat-icon-button class="has-text-primary" (click)="invite()">
+  <mat-icon>send</mat-icon>
+</button>
+</mat-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="(isCaregivers | async) || (isInviteFetch | async)">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="spinner spinner-border has-text-danger"></div>
+    </div>
+  </div>
+</section>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="!(isCaregivers | async) && !(isInviteFetch | async)">
+  <div class="hero-head">
+    <div class="has-text-centered">
+      <mat-form-field style="width: 100%;" class="is-paddingless is-marginless">
+        <mat-label>Sorteer</mat-label>
+        <mat-select>
+          <mat-option>Naam</mat-option>
+          <mat-option>Beoordeeling</mat-option>
+          <mat-option>Leeftijd</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;" class="is-paddingless is-marginless">
+        <mat-label>Stad</mat-label>
+        <input matInput [value]="city | async">
+        <button mat-icon-button matSuffix>
+          <mat-icon color="primary">search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <mat-tab-group>
+        <mat-tab label="Geschoold">
+          <cdk-virtual-scroll-viewport itemSize="50" class="scroll-viewport">
+            <div *cdkVirtualFor="let cg of (degreedCareGivers | async); let i = index">
+              <app-main-careconsumer-request-choose-item [caregiver]="cg"></app-main-careconsumer-request-choose-item>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </mat-tab>
+        <mat-tab label="Ongeschoold">
+          <cdk-virtual-scroll-viewport itemSize="50" class="scroll-viewport">
+            <div *cdkVirtualFor="let cg of (undegreedCareGivers | async); let i = index">
+              <app-main-careconsumer-request-choose-item [caregiver]="cg"></app-main-careconsumer-request-choose-item>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </mat-tab>
+    </mat-tab-group>
+    </div>
+
+  </section>

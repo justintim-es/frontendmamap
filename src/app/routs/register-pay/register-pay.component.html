@@ -1,0 +1,31 @@
+<section class="hero is-fullheight is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered" *ngIf="isFetch | async">
+      <nav class="level">
+        <div class="level-item">
+          <div>
+            <p class="title has-text-danger">Betalingslink ophalen..</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div>
+            <div class="spinner spinner-border has-text-danger"></div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container has-text-centered" *ngIf="isFetchSuccess | async">
+      <p class="title has-text-danger">Registratiekosten</p>
+      <p class="subtitle has-text-danger">
+        Betaal € 25 voor levenslang toegang tot onze verzorgers
+      </p>
+      <a href="{{ url | async }}" mat-raised-button color="primary" class="has-text-primary">betalen</a>
+    </div>
+  </div>
+  <div class="container has-text-centered" *ngIf="isFetchError | async">
+    <p class="title has-text-danger">Error</p>
+    <p class="subtitle has-text-danger">
+      {{ fetchError | async | json }}
+    </p>
+  </div>
+</section>

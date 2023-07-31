@@ -1,0 +1,107 @@
+<section class="hero is-fullheight is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <p class="title has-text-danger">Registeren</p>
+      <p class="subtitle has-text-danger">verzorging</p>
+      <form [formGroup]="form" (submit)="fetch()">
+      <mat-form-field style="width:100%">
+        <mat-label>Voornaam</mat-label>
+        <input matInput [(ngModel)]="firstName" [formControl]="firstNameFormControl" />
+        <mat-error *ngIf="firstNameFormControl.hasError('backend')">
+          {{ firstNameError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Achternaam</mat-label>
+        <input matInput [(ngModel)]="lastName" [formControl]="lastNameFormControl" />
+        <mat-error *ngIf="firstNameFormControl.hasError('backend')">
+          {{ lastNameError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Geboortedatum</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="dateOfBirth" [formControl]="dateOfBirthFormControl">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="dateOfBirthFormControl.hasError('backend')">
+          {{ dateOfBirthError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Adres regel één</mat-label>
+        <input matInput [(ngModel)]="addressOne" [formControl]="addressOneFormControl" />
+        <mat-error *ngIf="addressOneFormControl.hasError('backend')">
+          {{ addressOneError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Adres regel twee</mat-label>
+        <input matInput [(ngModel)]="addressTwo" [formControl]="addressTwoFormControl" />
+        <mat-error *ngIf="addressTwoFormControl.hasError('backend')">
+          {{ addressTwoError | async }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Postcode</mat-label>
+        <input type="text" matInput [formControl]="zipCodeFormControl" [(ngModel)]="zipCode">
+        <mat-error *ngIf="zipCodeFormControl.hasError('backend')">
+          {{ zipCodeError | async}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Woonplaats</mat-label>
+        <input type="text" matInput [formControl]="cityFormControl" [(ngModel)]="city">
+        <mat-error *ngIf="cityFormControl.hasError('backend')">
+          {{ cityError | async}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field style="width:100%">
+        <span matPrefix>&nbsp; +31 &nbsp;</span>
+        <input type="text" placeholder="Telefoonnummer" matInput [formControl]="phoneNumberFormControl" [(ngModel)]="phoneNumber">
+        <mat-error *ngIf="phoneNumberFormControl.hasError('backend')">
+          {{ phoneNumberError | async }}
+        </mat-error>
+      </mat-form-field>
+    <mat-form-field style="width:100%">
+      <mat-label>E-Mail</mat-label>
+      <input type="text" matInput [formControl]="emailFormControl" [(ngModel)]="email">
+      <mat-error *ngIf="emailFormControl.hasError('backend')">
+        {{ emailError | async}}
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('email')">
+        ongeldige e-mail
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('duplicate')">
+        Deze e-mail is al bezet
+      </mat-error>
+    </mat-form-field>
+      <mat-form-field style="width:100%">
+        <mat-label>Wachtwoord</mat-label>
+        <input type="password" matInput placeholder="Wachtwoord" [formControl]="passwordFormControl" [(ngModel)]="password">
+        <mat-error *ngIf="passwordFormControl.hasError('backend')">
+          {{ passwordError | async }}
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('PasswordTooShort')">
+          Uw wachtwoord moet 6 characters bevatten.
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('PasswordRequiresNonAlphanumeric')">
+          Uw wachtwoord heeft een symbool nodig.
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('PasswordRequiresDigit')">
+          Uw wachtwoord heeft een cijfer nodig  ('0'-'9').
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('PasswordRequiresUpper')">
+          Uw wachtwoord heeft een hoodletter nodig  ('A'-'Z').
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('PasswordRequiresLower')">
+          Uw wachtwoord heeft een kleine letter nodig  ('a'-'z').
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <br>
+      <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" type="submit">registeren</button>
+    </form>
+    </div>
+  </div>
+</section>

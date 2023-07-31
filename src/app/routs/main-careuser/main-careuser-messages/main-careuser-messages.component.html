@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button class="has-text-primary" routerLink="../profile">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="isFetch | async">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="spinner spinner-border has-text-danger"></div>
+    </div>
+  </div>
+</section>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="isFetchSuccess | async">
+  <div class="hero-head">
+    <div class="section hero is-smalll is-primary is-bold"
+    *ngFor="let conversation of (conversations | async); let i = index;"
+    routerLink="{{
+      (url | async)!.includes('/main-caregiver/') ?
+      ('/main-caregiver/messages-conversation/' +
+      (conversation[0]!.amISender ? conversation[0]!.recieverId : conversation[0]!.senderId)) :
+      '/main-careconsumer/messages-conversation/' +
+      (conversation[0]!.amISender ? conversation[0]!.recieverId : conversation[0]!.senderId)
+    }}">
+    <app-main-careuser-messages-item [idx]="i" [conversation]="conversation"></app-main-careuser-messages-item>
+    </div>
+  </div>
+</section>

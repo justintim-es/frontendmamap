@@ -1,0 +1,62 @@
+<section class="hero is-fullheight is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+    <p class="title has-text-danger">Login</p>
+
+      <mat-tab-group>
+        <mat-tab label="Verzorger">
+          <form [formGroup]="form" (submit)="fetchCaregiver()">
+            <mat-form-field style="width: 100%;">
+              <mat-label>E-Mail</mat-label>
+              <input matInput [formControl]="emailFormControl" [(ngModel)]="email" />
+              <mat-error *ngIf="emailFormControl.hasError('backend')">
+                {{ fetchError | async }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Wachtwoord</mat-label>
+              <input matInput [formControl]="passwordFormControl" [(ngModel)]="password" type="password"/>
+              <mat-error *ngIf="passwordFormControl.hasError('backend')">
+                {{ fetchError | async }}
+              </mat-error>
+              <mat-error *ngIf="passwordFormControl.hasError('locked')">
+                Deze account is op slot voor de komende 30 minuten vanwege ongeldige gegevens
+              </mat-error>
+              <mat-error *ngIf="passwordFormControl.hasError('allowed')">
+                Ongeldige login gegevens of uw e-mail is niet bevestigd
+              </mat-error>
+            </mat-form-field>
+            <br>
+            <br>
+            <button mat-raised-button style="width: 100%;" color="primary" type="submit">login</button>
+          </form>
+        </mat-tab>
+        <mat-tab label="Verzorging">
+          <form [formGroup]="form" (submit)="fetchCareconsumer()">
+            <mat-form-field style="width: 100%;">
+              <mat-label>E-Mail</mat-label>
+              <input matInput [formControl]="emailFormControl" [(ngModel)]="email" />
+              <mat-error *ngIf="emailFormControl.hasError('backend')">
+                {{ fetchError | async }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field style="width: 100%;">
+              <mat-label>Wachtwoord</mat-label>
+              <input matInput [formControl]="passwordFormControl" [(ngModel)]="password" type="password" />
+              <mat-error *ngIf="passwordFormControl.hasError('backend')">
+                {{ fetchError | async }}
+              </mat-error>
+              <mat-error *ngIf="passwordFormControl.hasError('lockout')">
+                Deze account is op slot voor de komende 30 minuten vanwege ongeldige gegevens
+              </mat-error>
+              <mat-error *ngIf="passwordFormControl.hasError('allowed')">
+                Bevestig uw e-mail eerst alstublieft
+              </mat-error>
+            </mat-form-field>
+            <button mat-raised-button style="width: 100%;" color="primary" type="submit">login</button>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</section>

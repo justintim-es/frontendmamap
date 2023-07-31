@@ -1,0 +1,41 @@
+<app-main-caregiver-toolbar></app-main-caregiver-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="isFetch | async">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="spinner spinner-border has-text-danger"></div>
+    </div>
+  </div>
+</section>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="(isFetchSuccess | async)">
+  <div class="hero-head p-6" *ngIf="!(profileImage | async)">
+    <div class="container has-text-centered">
+      <button mat-icon-button>
+        <mat-icon class="has-text-danger">account_circle</mat-icon>
+      </button>
+      <p class="subtitle has-text-danger is-size-6">U heeft nog geen profielfoto</p>
+      <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" routerLink="/main-caregiver/upload">uploaden</button>
+      <mat-form-field style="width: 100%;" class="pt-3">
+        <mat-label>Biografie</mat-label>
+        <textarea [formControl]="biografieFormControl" [(ngModel)]="biografie" rows="5" matInput>
+        </textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" (click)="biographyFetch()" *ngIf="!(isBiographyFetch | async)">bijwerken</button>
+    </div>
+  </div>
+  <div class="hero-head p-6" *ngIf="profileImage | async">
+    <div class="container has-text-centered">
+    <img src="{{ 'http://localhost:5192/profile-image/img/' + raschan() + '/' + (id | async) }}" class="custom-avatar is-size-1" />
+    <br>
+    <br>
+    <button mat-raised-button color="primary" class="has-text-primary" style="width: 100%;" routerLink="/main-caregiver/upload">profielfoto wijzigen</button>
+    <mat-form-field style="width: 100%;" class="pt-3">
+      <mat-label>Biografie</mat-label>
+      <textarea [formControl]="biografieFormControl" [(ngModel)]="biografie" rows="5" matInput>
+      </textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" (click)="biographyFetch()" *ngIf="!(isBiographyFetch | async)">bijwerken</button>
+    <div class="spinner spinner-border spinner-border-sm has-text-danger" *ngIf="isBiographyFetch | async"></div>
+    </div>
+  </div>
+
+</section>

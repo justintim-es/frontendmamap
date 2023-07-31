@@ -1,0 +1,29 @@
+
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="has-text-primary">
+      {{ 'Welkom '  + (firstName | async) + '!'}}
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button class="has-text-primary" (click)="open()" *ngIf="!(isOpen | async)">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button mat-icon-button class="has-text-primary" (click)="close()" *ngIf="isOpen | async">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row *ngIf="isOpen | async" routerLink="/main-caregiver/messages">
+    Berichten
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button>
+      <div class="spinner spinner-border spinner-border-sm has-text-primary" *ngIf="isUnreadMessagesFetch | async"></div>
+    </button>
+    <button mat-fab color="primary" *ngIf="isUnreadMessagesFetchSuccess | async">
+      {{ unreadMessages | async }}
+    </button>
+  </mat-toolbar-row>
+  <mat-toolbar-row *ngIf="isOpen | async">
+    Agenda
+  </mat-toolbar-row>
+  <mat-toolbar-row *ngIf="isOpen | async">
+    Uitloggen
+  </mat-toolbar-row>
+</mat-toolbar>

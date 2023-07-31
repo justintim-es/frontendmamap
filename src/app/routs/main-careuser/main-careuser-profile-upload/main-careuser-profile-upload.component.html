@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button routerLink="../profile">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div>
+        <input class="form-control form-control-lg has-text-danger" *ngIf="!(isFetch | async)" type="file" #img (change)="fetch()">
+        <div class="spinner spinner-border has-text-danger" *ngIf="isFetch | async"></div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<section class="hero is-fullheight is-primary is-bold">
+  <div class="hero-body">
+    <div class="container has-text-centered" *ngIf="isFetch | async">
+      <nav class="level">
+        <div class="level-item">
+          <div>
+            <p class="title has-text-danger">Activeren...</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div>
+            <div class="spinner spinner-border has-text-danger"></div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="container has-text-centered" *ngIf="isFetchSuccess | async">
+      <p class="title has-text-danger">Account is klaar voor gebruik!</p>
+      <p class="subtitle has-text-danger">u wordt zo doorgeleid naar de login pagina</p>
+    </div>
+    <div class="container has-text-centered" *ngIf="isFetchError400 | async">
+      <p class="title has-text-danger">
+        {{ (fetchError400 | async)!.title }}
+      </p>
+      <p class="subtitle has-text-danger">
+        {{ (fetchError400 | async)!.subtitle }}
+      </p>
+      <a href="{{ (fetchError400 | async)!.url }}" mat-raised-button color="primary" style="width: 100%;" class="has-text-primary">betalen</a>
+      </div>
+  </div>
+</section>

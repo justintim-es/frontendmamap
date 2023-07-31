@@ -1,0 +1,43 @@
+<article class="media">
+  <figure class="media-left">
+    <img
+     src="{{
+      'http://localhost:5192/profile-image/img/' +
+      raschan() +
+      '/' +
+      (conversation[0].amISender ?
+      conversation[0].recieverId :
+      conversation[0].senderId)
+    }}"
+     *ngIf="conversation[0].amISender ? conversation[0].reciever.hasImage : conversation[0].sender.hasImage"
+     class="custom-avatar-small"
+     >
+     <mat-icon
+     *ngIf="conversation[0].amISender ? !conversation[0].reciever.hasImage : !conversation[0].sender.hasImage"
+     class="has-text-danger mt-3 ml-5 mr-5"
+     style="transform: scale(3.5);">account_circle</mat-icon>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <p><strong>
+        {{
+          conversation[0].amISender ?
+          (conversation[0].reciever.firstName + ' ' + conversation[0].reciever.lastName) :
+          (conversation[0].sender.firstName + ' ' + conversation[0].sender.lastName)
+        }}
+      </strong>
+      <br>
+      {{
+        conversation[conversation.length-1].content ?
+        (conversation[conversation.length-1].amISender ?
+        ('you: ' + conversation[conversation.length-1].content) :
+        (conversation[conversation.length-1].reciever.firstName + ': ' + conversation[conversation.length-1].content)) :
+        'taak: ' + conversation[conversation.length-1].careRequest?.task
+      }}
+    </p>
+    </div>
+  </div>
+  <div class="media-right"><button mat-fab color="primary" class="has-text-primary" *ngIf="(unread | async)! > 0">
+    {{ unread | async }}
+  </button></div>
+</article>

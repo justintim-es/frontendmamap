@@ -1,0 +1,48 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button routerLink="{{ repeat ? '/main-careconsumer/profile' : ('../../../../messages-conversation/' + id)  }}">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+</mat-toolbar>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="(isCareRequest | async) || (isHasImage | async)"></section>
+<section class="hero is-fullheight-with-navbar is-primary is-bold" *ngIf="(isCareRequestSuccess | async)">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <img class="custom-avatar" src="{{ (imgUrl | async)! + '/profile-image/img/' + raschan() + '/' + id }}" *ngIf="hasImage | async" >
+      <mat-icon *ngIf="!(hasImage | async)" style="transform: scale(3.5);" class="has-text-danger p-7">account_circle</mat-icon>
+      <br>
+      <br>
+      <br>
+        <p class="title has-text-danger">
+          {{ (careRequest | async)!.task  }}
+        </p>
+        <p class="subtitle has-text-danger">
+          {{ (careRequest | async)!.description}}
+        </p>
+        <form [formGroup]="form" (submit)="offer()">
+          <mat-form-field style="width:100%">
+            <mat-label>De verzorger kan ===langskomen op</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="date" [formControl]="dateFormControl"  (dateChange)="datechange()" >
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="dateFormControl.hasError('backend')">
+              {{ dateError | async }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field style="width:100%">
+            <mat-label>om</mat-label>
+            <input matInput type="time" [formControl]="timeFormControl" [(ngModel)]="time" [disabled]="date != null" />
+          </mat-form-field>
+          <mat-form-field style="width:100%">
+            <span matPrefix>&nbsp; € &nbsp;</span>
+            <input type="number" matInput placeholder="Vergoeding" [formControl]="compensationFormControl" [(ngModel)]="compensation">
+            <mat-error *ngIf="compensationFormControl.hasError('backend')">
+              {{ compensationError | async }}
+            </mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="primary" class="has-text-primary" style="width: 100%;" type="submit" *ngIf="!(isFetch | async)" [disabled]="isButtonDisabled" >aanbieden</button>
+          <div class="spinner spinner-border spinner-border-sm has-text-danger" *ngIf="isFetch | async"></div>
+        </form>
+    </div>
+  </div>
+</section>

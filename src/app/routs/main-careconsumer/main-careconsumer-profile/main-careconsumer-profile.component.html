@@ -1,0 +1,60 @@
+<mat-toolbar color="primary" routerLink="/main-careconsumer/messages">
+  Berichten
+  &nbsp;
+  <mat-icon>chat</mat-icon>
+  <span class="toolbar-spacer"></span>
+  <button mat-fab color="primary">
+    0
+  </button>
+</mat-toolbar>
+<section class="hero is-fullheight is-primary is-bold" *ngIf="isFetch | async">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="spinner spinner-border has-text-danger"></div>
+    </div>
+  </div>
+</section>
+<section class="hero is-halfheight is-primary is-bold" *ngIf="isFetchSuccess | async">
+  <div class="hero-body">
+    <div class="container has-text-centered" *ngIf="!(profileImage | async)">
+      <button mat-icon-button>
+        <mat-icon class="has-text-danger">account_circle</mat-icon>
+      </button>
+      <p class="subtitle has-text-danger is-size-6">U heeft nog geen profielfoto</p>
+      <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" routerLink="/main-careconsumer/upload">uploaden</button>
+      <br>
+    </div>
+    <div class="hero-body" *ngIf="profileImage | async">
+      <div class="container has-text-centered">
+      <img src="{{ 'http://localhost:5192/profile-image/img/' + raschan() + '/' + (id | async) }}" class="custom-avatar p-3" useCache="false" />
+      <button mat-button color="primary" class="has-text-danger" routerLink="/main-careconsumer/upload">Profielfoto wijzigen</button>
+      </div>
+    </div>
+  </div>
+</section>
+<button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary" routerLink="/main-careconsumer/request">Verzorging aanvragen</button>
+<section class="hero is-halfheight is-primary is-bold">
+  <div class="hero-head">
+    <mat-tab-group>
+      <mat-tab label="Gepland">
+        <div>
+          <app-main-careconsumer-profile-appointment *ngFor="let pl of (planned | async); let i = index" [appointment]="pl" [isPlanned]="true" [index]="i"></app-main-careconsumer-profile-appointment>
+          <!-- <button mat-raised-button color="primary" style="width: 100%;" class="has-text-primary">afspraak herhalen</button> -->
+        </div>
+      </mat-tab>
+      <mat-tab label="Afgelopen">
+        <div>
+          <app-main-careconsumer-profile-appointment *ngFor="let ps of (passed | async); let i = index" [appointment]="ps" [isPlanned]="false" [index]="i"></app-main-careconsumer-profile-appointment>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </div>
+
+</section>
+<!-- <mat-toolbar color="primary" class="has-text-primary">
+  Geplande verzorging
+  <button mat-icon-button>
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</mat-toolbar> -->
